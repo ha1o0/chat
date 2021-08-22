@@ -1,6 +1,14 @@
 <template>
   <div id="app">
     <div class="container" :style="{ height: (screenHeight - 150) + 'px' }">
+      <el-alert
+        v-if="showError"
+        title="连接服务器错误"
+        type="error"
+        :closable="false"
+        center
+        effect="dark">
+      </el-alert>
       <p>欢迎进入ele聊天系统</p>
       <div class="dialogs" :style="{ height: (screenHeight - 160) + 'px' }" ref="dialogRef">
         <single-dialog v-for="(singleDialog, index) in dialogData.list" :key="'dialog' + index" :name="singleDialog.name" :content="singleDialog.content" :position="singleDialog.position" :time="singleDialog.time" :showTime="singleDialog.showTime"/>
@@ -12,7 +20,6 @@
           <el-button type="info" size="medium" round class="send-button" @click="mockSend">模拟发送</el-button>
         </div>
       </div>
-      
     </div>
   </div>
 </template>
@@ -29,6 +36,7 @@ export default {
   },
   data() {
     return {
+      showError: false,
       socketPath: "ws://127.0.0.1:9999/upper",
       socket: "",
       screenHeight: window.screen.height,
@@ -37,7 +45,19 @@ export default {
       dialogData: {
         list: []
       },
-      inputValue: ""
+      inputValue: "",
+      test: {},
+      index: 0
+    }
+  },
+  watch: {
+    test: {
+      handler (val, oldVal) {
+        // eslint-disable-next-line
+        console.log('chageegege: ', val, oldVal)
+      },
+      deep: true,
+      immediate: true
     }
   },
   methods: {
@@ -47,8 +67,11 @@ export default {
       window.EventBus.$emit('clearInput', "")
     },
     mockSend() {
-      // eslint-disable-next-line
-      console.log("clickkkkk")
+      this.index++
+      // let temp = this.test
+      // temp[`number${this.index}`] = Math.random()
+      this.$set(this.test[`number${this.index}`], Math.random())
+      // this.test[`number${this.index}`] = Math.random()
       let randNumber = Math.floor(Math.random()*10)
       let position = randNumber > 10 ? "left" : "right"
 
@@ -92,6 +115,7 @@ export default {
     error() {
       // eslint-disable-next-line
       console.log("连接错误")
+      this.showError = true
     },
     getMessage(msg) {
       // eslint-disable-next-line
