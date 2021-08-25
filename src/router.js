@@ -25,6 +25,11 @@ export default new Router({
       path: '/danmu',
       name: 'danmu',
       component: () => import(/* webpackChunkName: "danmu" */ './views/Danmu.vue')
+    },
+    {
+      path: '/list',
+      name: 'list',
+      component: () => import(/* webpackChunkName: "danmu" */ './views/List.vue')
     }
   ]
 })
