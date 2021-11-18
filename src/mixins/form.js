@@ -15,6 +15,7 @@ const formMixin = {
       await this['common/increment']()
       // await this.$store.dispatch('common/increment')
       console.log(this.count)
+      this.$router.replace({ path: `/about?page=2&size=10` })
     }
   }
 }
